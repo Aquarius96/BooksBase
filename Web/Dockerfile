@@ -8,6 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Web/Web.csproj", "Web/"]
+COPY ["BooksBase.DataAccess/BooksBase.DataAccess.csproj", "BooksBase.DataAccess/"]
+COPY ["BooksBase.DataAccess/BooksBase.Models.csproj", "BooksBase.Models/"]
 RUN dotnet restore "Web/Web.csproj"
 COPY . .
 WORKDIR "/src/Web"

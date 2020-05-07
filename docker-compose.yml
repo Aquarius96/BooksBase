@@ -3,6 +3,26 @@ version: '3.4'
 services:
   web:
     image: ${DOCKER_REGISTRY-}web
+    container_name: web
     build:
-      context: .
+      context: ./
       dockerfile: Web/Dockerfile
+    links:
+    - db
+    depends_on:
+    - db
+    networks:
+    - local
+  db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
+    container_name: db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "R8PQW2vUjH"
+    networks:
+     - local
+    ports:
+     - "1433:1433"
+networks:
+  local:
+    driver: bridge
