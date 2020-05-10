@@ -63,7 +63,8 @@ namespace Web.Controllers.Auth
         {
             public MappingProfile()
             {
-                CreateMap<RegisterCommand, User>();
+                CreateMap<RegisterCommand, User>()
+                    .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
             }
         }
 
