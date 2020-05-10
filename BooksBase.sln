@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{D
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2A5A0286-45F3-4A8D-9224-A5700FAD9DC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksBase.DataAccess", "BooksBase.DataAccess\BooksBase.DataAccess.csproj", "{86E3833D-FA0E-4D43-91A5-140B0AE6D299}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BooksBase.DataAccess", "BooksBase.DataAccess\BooksBase.DataAccess.csproj", "{86E3833D-FA0E-4D43-91A5-140B0AE6D299}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksBase.Models", "BooksBase.Models\BooksBase.Models.csproj", "{BC7F1F30-F198-4424-8B16-BC247A81861E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BooksBase.Models", "BooksBase.Models\BooksBase.Models.csproj", "{BC7F1F30-F198-4424-8B16-BC247A81861E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksBase.Shared", "BooksBase.Shared\BooksBase.Shared.csproj", "{7039DF70-2865-4DBC-98BC-2522E0CAB5AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{BC7F1F30-F198-4424-8B16-BC247A81861E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC7F1F30-F198-4424-8B16-BC247A81861E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC7F1F30-F198-4424-8B16-BC247A81861E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7039DF70-2865-4DBC-98BC-2522E0CAB5AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7039DF70-2865-4DBC-98BC-2522E0CAB5AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7039DF70-2865-4DBC-98BC-2522E0CAB5AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7039DF70-2865-4DBC-98BC-2522E0CAB5AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using AutoMapper;
 using BooksBase.DataAccess;
 using BooksBase.Models.Auth;
+using BooksBase.Shared;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,6 +43,19 @@ namespace Web
             services.AddIdentity<User, Role>(opt => opt.User.RequireUniqueEmail = true)
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
+            services.AddMediatR(typeof(Startup).Assembly);
+            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddControllers(opt =>
+                    opt.Filters.Add(typeof(ValidateActionFilter)))
+                .AddNewtonsoftJson()
+                .AddFluentValidation(opt =>
+                {
+                    opt.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+                });
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Books base", Version = "v1" });
