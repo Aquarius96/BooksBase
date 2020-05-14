@@ -1,61 +1,70 @@
 ﻿using AutoMapper;
+using BooksBase.DataAccess;
 using BooksBase.Models.Auth;
 using BooksBase.Shared;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Resources;
 
-namespace Web.Controllers.Auth
+namespace Web.Controllers.Users
 {
     [ApiController]
-    public class RegisterUser : ControllerBase
+    public class UpdateUser : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public RegisterUser(IMediator mediator)
+        public UpdateUser(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpPost("accounts/register")]
-        public async Task<IActionResult> Register(RegisterCommand command)
+        [Authorize]
+        [HttpPut("users/{id}")]
+        public async Task<IActionResult> Update(Guid id, UpdateUserCommand command)
         {
+            command.Id = id;
             var result = await _mediator.Send(command);
             return result.Process();
         }
 
-        public class RegisterCommand : IRequest<Result>
+        public class UpdateUserCommand : IRequest<Result>
         {
+            public Guid Id { get; set; }
             public string Email { get; set; }
-            public string Password { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
         }
 
-        public class Handler : IRequestHandler<RegisterCommand, Result>
+        public class Handler : IRequestHandler<UpdateUserCommand, Result>
         {
-            private readonly UserManager<User> _userManager;
+            private readonly DataContext _db;            
             private readonly IMapper _mapper;
 
-            public Handler(UserManager<User> userManager,
+            public Handler(DataContext db,                
                 IMapper mapper)
             {
-                _userManager = userManager;
+                _db = db;                
                 _mapper = mapper;
             }
 
-            public async Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
+            public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
-                var user = _mapper.Map<User>(request);
-
-                var result = await _userManager.CreateAsync(user, request.Password);
-                if(result.Succeeded == false)
+                var user = await _db.Users.FindAsync(request.Id);
+                if(user == null)
                 {
-                    return Result.Error(result.Errors);
+                    return Result.Error(Resource.UserNotFound);
                 }
+
+                _mapper.Map(request, user);
+                await _db.SaveChangesAsync(cancellationToken);
 
                 return Result.Ok();
             }
@@ -65,20 +74,18 @@ namespace Web.Controllers.Auth
         {
             public MappingProfile()
             {
-                CreateMap<RegisterCommand, User>()
+                CreateMap<UpdateUserCommand, User>()
                     .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
             }
         }
 
-        public class Validator : AbstractValidator<RegisterCommand>
+        public class Validator : AbstractValidator<UpdateUserCommand>
         {
             public Validator()
             {
                 RuleFor(e => e.Email)
                     .EmailAddress()
-                    .NotEmpty();
-                RuleFor(e => e.Password)
-                    .NotEmpty();
+                    .NotEmpty();                
                 RuleFor(e => e.FirstName)
                     .NotEmpty();
                 RuleFor(e => e.LastName)
