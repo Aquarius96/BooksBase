@@ -70,6 +70,15 @@ namespace Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Książka o podanym id nie istnieje..
+        /// </summary>
+        public static string BookNotFound {
+            get {
+                return ResourceManager.GetString("BookNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uzytkownik o podanym id nie istnieje..
         /// </summary>
         public static string UserNotFound {

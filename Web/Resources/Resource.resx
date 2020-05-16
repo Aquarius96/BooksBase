@@ -120,6 +120,9 @@
   <data name="AuthorNotFound" xml:space="preserve">
     <value>Autor o podanym id nie istnieje.</value>
   </data>
+  <data name="BookNotFound" xml:space="preserve">
+    <value>Książka o podanym id nie istnieje.</value>
+  </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>Uzytkownik o podanym id nie istnieje.</value>
   </data>
