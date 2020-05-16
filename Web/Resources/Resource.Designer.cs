@@ -61,6 +61,15 @@ namespace Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Autor o podanym id nie istnieje..
+        /// </summary>
+        public static string AuthorNotFound {
+            get {
+                return ResourceManager.GetString("AuthorNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uzytkownik o podanym id nie istnieje..
         /// </summary>
         public static string UserNotFound {
