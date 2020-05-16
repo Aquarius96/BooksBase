@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BooksBase.Migrations": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

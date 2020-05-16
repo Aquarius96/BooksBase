@@ -122,6 +122,20 @@ namespace Web
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
             .Where(t => typeof(IService).IsAssignableFrom(t))
             .AsImplementedInterfaces();
+
+            builder.Register(c =>
+            {
+                var config = c.Resolve<IConfiguration>();
+
+                var opt = new DbContextOptionsBuilder<DataContext>();
+                opt.UseSqlServer(config.GetConnectionString("DbConnection"));
+
+                return opt.Options;
+            }).AsSelf().SingleInstance();
+
+            builder.RegisterType<DataContext>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
         }
     }
 }

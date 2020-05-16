@@ -23,6 +23,20 @@ services:
      - local
     ports:
      - "1433:1433"
+  migrations:
+    image: ${DOCKER_REGISTRY-}migrations
+    container_name: migrations
+    build:
+      context: ./
+      dockerfile: BooksBase.Migrations/Dockerfile
+    links:
+    - db
+    depends_on:
+    - db
+    networks:
+    - local
+    environment:
+    - "ConnectionStrings:DbConnection=Server=db;Database=booksBase;User=sa;Password=R8PQW2vUjH;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
 networks:
   local:
     driver: bridge
