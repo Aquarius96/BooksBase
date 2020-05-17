@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Permissions;
 using Web.Resources;
 
 namespace Web.Controllers.Users
@@ -22,7 +23,7 @@ namespace Web.Controllers.Users
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(CorePermissions.DisplayUsers)]
         [HttpGet("users/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {

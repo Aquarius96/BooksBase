@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Permissions;
 using Web.Resources;
 
 namespace Web.Controllers.Users
@@ -26,7 +27,7 @@ namespace Web.Controllers.Users
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(CorePermissions.ManageUsers)]
         [HttpPut("users/{id}")]
         public async Task<IActionResult> Update(Guid id, UpdateUserCommand command)
         {

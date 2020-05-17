@@ -13,7 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BooksBase.DataAccess\BooksBase.DataAccess.csproj" />
+    <ProjectReference Include="..\BooksBase.Infrastructure\BooksBase.Infrastructure.csproj" />
     <ProjectReference Include="..\BooksBase.Shared\BooksBase.Shared.csproj" />
+    <ProjectReference Include="..\Web\Web.csproj" />
   </ItemGroup>
 
 </Project>

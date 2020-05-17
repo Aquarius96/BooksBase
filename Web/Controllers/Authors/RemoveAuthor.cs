@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Permissions;
 using Web.Resources;
 
 namespace Web.Controllers.Authors
@@ -22,7 +23,7 @@ namespace Web.Controllers.Authors
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(CorePermissions.ManageAuthors)]
         [HttpDelete("authors/{id}")]
         public async Task<IActionResult> Remove(Guid id)
         {

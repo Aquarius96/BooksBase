@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Permissions;
 using Web.Resources;
 
 namespace Web.Controllers.Authors
@@ -23,7 +24,7 @@ namespace Web.Controllers.Authors
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(CorePermissions.ManageAuthors)]
         [HttpPost("authors")]
         public async Task<IActionResult> Add(UpdateAuthorCommand command)
         {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Permissions;
 using Web.Resources;
 
 namespace Web.Controllers.Books
@@ -20,7 +21,7 @@ namespace Web.Controllers.Books
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(CorePermissions.ManageBooks)]
         [HttpDelete("books/{id}")]
         public async Task<IActionResult> Remove(Guid id)
         {

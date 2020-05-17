@@ -1,28 +1,28 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using AutoMapper;
 using BooksBase.DataAccess;
+using BooksBase.Infrastructure;
 using BooksBase.Models.Auth;
 using BooksBase.Shared;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Web.Permissions;
 
 namespace Web
 {
@@ -40,6 +40,14 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSingleton<IPermissionService>(provider =>
+            {
+                var permissionService = new PermissionService();
+                permissionService.AddPermissions(typeof(CorePermissions));
+
+                return permissionService;
+            });
 
             var connectionString = Configuration.GetConnectionString("DbConnection");
             services.AddDbContext<DataContext>(o => o.UseSqlServer(connectionString));
@@ -88,6 +96,9 @@ namespace Web
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Secret))
                     };
                 });
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddSingleton<IConfigureOptions<AuthorizationOptions>, ConfigureAuthorizationOptions>();
+            services.AddAuthorization();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -114,7 +125,7 @@ namespace Web
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Books base V1");
-            });
+            });            
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -136,6 +147,23 @@ namespace Web
             builder.RegisterType<DataContext>()
                 .AsSelf()
                 .InstancePerLifetimeScope();
+        }
+    }
+
+    public class ConfigureAuthorizationOptions : IConfigureOptions<AuthorizationOptions>
+    {
+        private readonly IPermissionService _permissionService;
+        public ConfigureAuthorizationOptions(IPermissionService permissionService)
+        {
+            _permissionService = permissionService;
+        }
+
+        public void Configure(AuthorizationOptions options)
+        {            
+            foreach (var permission in _permissionService.GetAllPermissions())
+            {
+                options.AddPolicy(permission.Claim, builder => builder.AddRequirements(new PermissionRequirement(permission.Claim)));
+            }
         }
     }
 }

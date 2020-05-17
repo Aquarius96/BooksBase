@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Permissions;
 using Web.Resources;
 
 namespace Web.Controllers.Books
@@ -25,7 +26,7 @@ namespace Web.Controllers.Books
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(CorePermissions.DisplayBooks)]
         [HttpGet("books/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {

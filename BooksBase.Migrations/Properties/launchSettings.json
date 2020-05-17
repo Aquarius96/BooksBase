@@ -1,7 +1,10 @@
 {
   "profiles": {
     "BooksBase.Migrations": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "ConnectionStrings__DbConnection": "Server=localhost,1433;Database=booksBase;User=sa;Password=R8PQW2vUjH;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+      }
     },
     "Docker": {
       "commandName": "Docker"

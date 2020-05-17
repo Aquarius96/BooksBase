@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Permissions;
 
 namespace Web.Controllers.Authors
 {
@@ -23,7 +24,7 @@ namespace Web.Controllers.Authors
             _mediator = mediator;
         }
 
-        [Authorize]
+        [Authorize(CorePermissions.DisplayAuthors)]
         [HttpGet("authors")]
         public async Task<IActionResult> Get()
         {
