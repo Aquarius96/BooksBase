@@ -73,6 +73,7 @@ namespace Web
             });
 
             services.Configure<AuthSettings>(options => Configuration.GetSection("Authentication").Bind(options));
+            services.Configure<EmailSettings>(options => Configuration.GetSection("EmailSettings").Bind(options));
             services.AddOptions();
             var authentication = Configuration.GetSection("Authentication");
             var authSettings = authentication.Get<AuthSettings>();

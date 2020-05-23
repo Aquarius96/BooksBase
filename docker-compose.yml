@@ -37,6 +37,33 @@ services:
     - local
     environment:
     - "ConnectionStrings:DbConnection=Server=db;Database=booksBase;User=sa;Password=R8PQW2vUjH;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+  azurestorage:
+    container_name: azurestorage
+    image: "arafato/azurite:latest"
+    ports:
+     - "9569:10000"
+     - "9570:10001"
+     - "9571:10002"
+    networks:
+     - local
+  azurefunctions:
+    image: ${DOCKER_REGISTRY-}corefunctions
+    container_name: azurefunctions
+    environment:
+    - AzureWebJobsStorage=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurestorage:10000/devstoreaccount1;QueueEndpoint=http://azurestorage:10001/devstoreaccount1;TableEndpoint=http://azurestorage:10002/devstoreaccount1;
+    - QueueName=emails
+    - SendGridApiKey=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
+    - SenderEmail=aquarius96@wp.pl
+    - SenderName=BooksBase
+    build:
+      context: ./BooksBase.CoreFunctions
+      dockerfile: Dockerfile
+    links:
+     - azurestorage
+    depends_on: 
+     - azurestorage
+    networks:
+     - local
 networks:
   local:
     driver: bridge

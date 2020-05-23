@@ -39,12 +39,15 @@ namespace Web.Controllers.Auth
         {
             private readonly UserManager<User> _userManager;
             private readonly IMapper _mapper;
+            private readonly IEmailService _emailService;
 
             public Handler(UserManager<User> userManager,
-                IMapper mapper)
+                IMapper mapper,
+                IEmailService emailService)
             {
                 _userManager = userManager;
                 _mapper = mapper;
+                _emailService = emailService;
             }
 
             public async Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -58,6 +61,11 @@ namespace Web.Controllers.Auth
                 }
 
                 await _userManager.AddToRoleAsync(user, "User");
+                await _emailService.SendAsync("Register", new RecipientData
+                {
+                    Email = user.Email,
+                    Name = user.UserName
+                }, new { }, cancellationToken);
 
                 return Result.Ok();
             }

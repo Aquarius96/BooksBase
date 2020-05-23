@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "BooksBase.CoreFunctions": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 32305,
+      "useSSL": false
+    }
+  }
+}
