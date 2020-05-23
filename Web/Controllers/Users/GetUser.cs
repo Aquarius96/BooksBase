@@ -5,7 +5,9 @@ using BooksBase.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Web.Permissions;
@@ -42,6 +44,13 @@ namespace Web.Controllers.Users
             public string Email { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
+            public List<RoleDto> Roles { get; set; }
+        }
+
+        public class RoleDto
+        {
+            public Guid Id { get; set; }
+            public string Name { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<UserDto>>
@@ -58,7 +67,10 @@ namespace Web.Controllers.Users
 
             public async Task<Result<UserDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _db.Users.FindAsync(request.Id);
+                var user = await _db.Users
+                    .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                    .FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
                 if(user == null)
                 {
                     return Result.Error<UserDto>(Resource.UserNotFound);
@@ -73,7 +85,11 @@ namespace Web.Controllers.Users
         {
             public MappingProfile()
             {
-                CreateMap<User, UserDto>();
+                CreateMap<User, UserDto>()
+                    .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles));
+                CreateMap<UserRole, RoleDto>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RoleId))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Role.Name));
             }
         }
     }

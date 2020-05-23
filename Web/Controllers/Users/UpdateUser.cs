@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
+using AutoMapper.EquivalencyExpression;
 using BooksBase.DataAccess;
 using BooksBase.Models.Auth;
 using BooksBase.Shared;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Web.Permissions;
@@ -42,6 +42,7 @@ namespace Web.Controllers.Users
             public string Email { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
+            public List<Guid> Roles { get; set; }
         }
 
         public class Handler : IRequestHandler<UpdateUserCommand, Result>
@@ -58,7 +59,9 @@ namespace Web.Controllers.Users
 
             public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
-                var user = await _db.Users.FindAsync(request.Id);
+                var user = await _db.Users
+                    .Include(u => u.UserRoles)
+                    .FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
                 if(user == null)
                 {
                     return Result.Error(Resource.UserNotFound);
@@ -76,7 +79,11 @@ namespace Web.Controllers.Users
             public MappingProfile()
             {
                 CreateMap<UpdateUserCommand, User>()
-                    .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+                    .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+                    .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src => src.Roles));
+                CreateMap<Guid, UserRole>()
+                    .EqualityComparison((id, role) => role.RoleId == id)
+                    .ConvertUsing(id => new UserRole { RoleId = id });
             }
         }
 

@@ -57,6 +57,8 @@ namespace Web.Controllers.Auth
                     return Result.Error(result.Errors);
                 }
 
+                await _userManager.AddToRoleAsync(user, "User");
+
                 return Result.Ok();
             }
         }

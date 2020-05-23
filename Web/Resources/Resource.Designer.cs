@@ -79,6 +79,15 @@ namespace Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rola o podanym id nie istnieje..
+        /// </summary>
+        public static string RoleNotFound {
+            get {
+                return ResourceManager.GetString("RoleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uzytkownik o podanym id nie istnieje..
         /// </summary>
         public static string UserNotFound {
