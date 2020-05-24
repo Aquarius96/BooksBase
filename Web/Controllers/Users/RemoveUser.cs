@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Constants;
 using Web.Permissions;
 using Web.Resources;
 
@@ -23,6 +24,7 @@ namespace Web.Controllers.Users
             _mediator = mediator;
         }
 
+        [NSwag.Annotations.OpenApiTag(CoreConstants.Users)]
         [Authorize(CorePermissions.ManageUsers)]
         [HttpDelete("users/{id}")]
         public async Task<IActionResult> Remove(Guid id)

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Constants;
 using Web.Permissions;
 
 namespace Web.Controllers.Roles
@@ -24,6 +25,7 @@ namespace Web.Controllers.Roles
             _mediator = mediator;
         }
 
+        [NSwag.Annotations.OpenApiTag(CoreConstants.Roles)]
         [Authorize(CorePermissions.DisplayRoles)]
         [HttpGet("roles")]
         public async Task<IActionResult> Get()

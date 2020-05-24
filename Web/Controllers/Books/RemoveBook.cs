@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Constants;
 using Web.Permissions;
 using Web.Resources;
 
@@ -21,6 +22,7 @@ namespace Web.Controllers.Books
             _mediator = mediator;
         }
 
+        [NSwag.Annotations.OpenApiTag(CoreConstants.Books)]
         [Authorize(CorePermissions.ManageBooks)]
         [HttpDelete("books/{id}")]
         public async Task<IActionResult> Remove(Guid id)

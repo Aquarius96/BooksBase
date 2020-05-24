@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Constants;
 
 namespace Web.Controllers.Auth
 {
@@ -20,6 +21,7 @@ namespace Web.Controllers.Auth
             _mediator = mediator;
         }
 
+        [NSwag.Annotations.OpenApiTag(CoreConstants.Accounts)]
         [HttpPost("accounts/register")]
         public async Task<IActionResult> Register(RegisterCommand command)
         {

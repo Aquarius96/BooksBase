@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Constants;
 using Web.Permissions;
 
 namespace Web.Controllers.Users
@@ -24,6 +25,7 @@ namespace Web.Controllers.Users
             _mediator = mediator;
         }
 
+        [NSwag.Annotations.OpenApiTag(CoreConstants.Users)]
         [Authorize(CorePermissions.DisplayUsers)]
         [HttpGet("users")]
         public async Task<IActionResult> Get()

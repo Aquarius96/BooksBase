@@ -3,13 +3,16 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Web/Web.csproj", "Web/"]
 COPY ["BooksBase.DataAccess/BooksBase.DataAccess.csproj", "BooksBase.DataAccess/"]
 COPY ["BooksBase.Models/BooksBase.Models.csproj", "BooksBase.Models/"]
+COPY ["BooksBase.CoreFunctions/BooksBase.CoreFunctions.csproj", "BooksBase.CoreFunctions/"]
+COPY ["BooksBase.Infrastructure/BooksBase.Infrastructure.csproj", "BooksBase.Infrastructure/"]
+COPY ["BooksBase.Migrations/BooksBase.Migrations.csproj", "BooksBase.Migrations/"]
+COPY ["BooksBase.Shared/BooksBase.Shared.csproj", "BooksBase.Shared/"]
 RUN dotnet restore "Web/Web.csproj"
 COPY . .
 WORKDIR "/src/Web"

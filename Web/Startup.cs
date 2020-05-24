@@ -21,7 +21,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using Web.Permissions;
 
 namespace Web
@@ -67,9 +68,17 @@ namespace Web
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerDocument(settings =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Books base", Version = "v1" });
+                settings.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+                settings.AddSecurity("JWT",
+                    new OpenApiSecurityScheme
+                    {
+                        Type = OpenApiSecuritySchemeType.ApiKey,
+                        Name = "Authorization",
+                        In = OpenApiSecurityApiKeyLocation.Header,
+                        Description = "Type: Bearer {your JWT token}"
+                    });
             });
 
             services.Configure<AuthSettings>(options => Configuration.GetSection("Authentication").Bind(options));
@@ -120,13 +129,14 @@ namespace Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Books base V1");
             });            
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3(settings =>
+            {
+                settings.TagsSorter = "alpha";
+                settings.OperationsSorter = "alpha";
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

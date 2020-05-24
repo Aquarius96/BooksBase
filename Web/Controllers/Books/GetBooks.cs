@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Web.Constants;
 using Web.Permissions;
 
 namespace Web.Controllers.Books
@@ -24,6 +25,7 @@ namespace Web.Controllers.Books
             _mediator = mediator;
         }
 
+        [NSwag.Annotations.OpenApiTag(CoreConstants.Books)]
         [Authorize(CorePermissions.DisplayBooks)]
         [HttpGet("books")]
         public async Task<IActionResult> Get()
