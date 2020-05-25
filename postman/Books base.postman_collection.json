@@ -1,0 +1,611 @@
+{
+	"info": {
+		"_postman_id": "05e36947-f31c-4b07-bcc6-882b50b3702b",
+		"name": "Books base",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"twz34185@zzrgg.com\",\n\t\"password\": \"Password1!\",\n\t\"firstName\": \"First name\",\n\t\"lastName\": \"Last name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "76410e61-f8ce-488c-9725-1627b1a68753",
+								"exec": [
+									"pm.test(\"Return bearer Token\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.value.token).not.equal(null);\r",
+									"    pm.environment.set(\"token\", jsonData.value.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"admin@booksbase.com\",\n\t\"password\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "Add author",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firstName\": \"Andrzej\",\n\t\"lastName\": \"Sapkowski\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get author",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/authors/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "952c8433-a566-4956-fa30-08d7f9a04f4e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get authors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/authors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove author",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/authors/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5C6CFCC3-9ABA-4B94-9600-08D7F99779C7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update author",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firstName\": \"Brandon\",\n\t\"lastName\": \"Sanderson\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/authors/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5c6cfcc3-9aba-4b94-9600-08d7f99779c7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Add book",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Wiedźmin\",\n\t\"description\": \"Pierwsza część sagi o wiedźminie Geralcie.\",\n\t\"genre\": \"fantastyka\",\n\t\"authorId\": \"952c8433-a566-4956-fa30-08d7f9a04f4e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get book",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "621f7143-3b76-4275-79cf-08d7f9a0e71b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "621f7143-3b76-4275-79cf-08d7f9a0e71b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update book",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Wiedźmin\",\n\t\"description\": \"Pierwsza część sagi o wiedźminie Geralcie.\",\n\t\"genre\": \"fantastyka\",\n\t\"authorId\": \"952c8433-a566-4956-fa30-08d7f9a04f4e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "621f7143-3b76-4275-79cf-08d7f9a0e71b"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4f1273ed-6ec0-495d-b044-c7e9c7013e5d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e73ce60d-e7bc-4580-bc6f-75c89226368c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Get roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/roles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get role",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/roles/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a3d7e515-6c8a-44d3-4781-08d7fa50cd03"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0eced5cd-4e3e-4bfd-bb73-7eb707be8885",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3acabe0-55a0-44ca-9480-dca1de1c9c4f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "bf591094-008c-448e-d85b-08d7fef2bfee"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"isard@wp.pl\",\n\t\"firstName\": \"User name\",\n\t\"lastName\": \"Last name\",\n\t\"roles\": [\n\t\t\"B1D1426F-2C72-45AA-4782-08D7FA50CD03\"\n\t\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "bf591094-008c-448e-d85b-08d7fef2bfee"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62087371-bab5-4d16-705c-08d7f82e02fa"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
