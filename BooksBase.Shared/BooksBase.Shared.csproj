@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>    
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="ExtCore.Infrastructure" Version="5.1.0" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
